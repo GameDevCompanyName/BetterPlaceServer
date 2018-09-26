@@ -11,11 +11,11 @@ public class ServerMethods {
         userChannel.write(message);
     }
 
-    public static void loginAttemptReceived(Channel userChannel, String login, String password){
+    public static void loginAttemptReceived(Channel userChannel, String login, String password) {
         Logger.log("Обрабатываю попытку залогиниться по логину: " + login, className);
         boolean userOnline = Broadcaster.checkIfUserOnline(login);
 
-        if (userOnline){
+        if (userOnline) {
             Logger.log("Юзер с таким именем уже онлайн: " + login, className);
             sendUserAlreadyOnlineMessage(userChannel);
             return;
@@ -23,10 +23,10 @@ public class ServerMethods {
 
         boolean userExists = DBConnector.searchForUser(login);
 
-        if (userExists){
+        if (userExists) {
             Logger.log("Такой пользователь уже есть в базеб првоеряю пароль для: " + login, className);
             boolean passswordIsCorrect = DBConnector.checkLoginAttempt(login, password);
-            if (passswordIsCorrect){
+            if (passswordIsCorrect) {
                 Logger.log("Верный пароль для: " + login, className);
                 User newUser = initUser(userChannel, login);
                 sendUserLoginSuccessMessage(userChannel);
@@ -38,7 +38,7 @@ public class ServerMethods {
             }
         }
 
-        if (!userExists){
+        if (!userExists) {
             Logger.log("Такого пользователя в базе ещё нет, создаю нового для: " + login, className);
             DBConnector.insertNewUser(login, password);
             Logger.log("Пользователь создан: " + login, className);
@@ -49,7 +49,7 @@ public class ServerMethods {
         }
     }
 
-    private static User initUser(Channel userChannel, String login){
+    private static User initUser(Channel userChannel, String login) {
         Logger.log("Инициализирую нового пользователя: " + login, className);
         String userColor = DBConnector.getUserColor(login);
         User newUser = new User(userChannel, login, userColor);
@@ -60,7 +60,7 @@ public class ServerMethods {
     public static void messageReceived(Channel userChannel, String text) {
         Logger.log("Проверяю залогинен ли канал, пытающийся отправить сообщение.", className);
         boolean userIsLogged = Broadcaster.checkIfChannelLogged(userChannel);
-        if (userIsLogged){
+        if (userIsLogged) {
             Logger.log("Канал залогинен, передаю сообщение в Broadcaster.", className);
             Broadcaster.messageRecieved(userChannel, text);
         } else {

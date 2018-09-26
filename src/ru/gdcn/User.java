@@ -9,14 +9,14 @@ public class User {
     private Channel userChannel;
     private String color;
 
-    public User(Channel userChannel, String login, String color){
+    public User(Channel userChannel, String login, String color) {
         Logger.log("Создаю нового юзера: " + login, className);
         this.userChannel = userChannel;
         this.login = login;
         this.color = color;
     }
 
-    public User(String login){
+    public User(String login) {
         this.login = login;
     }
 
@@ -36,7 +36,7 @@ public class User {
         this.color = color;
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         userChannel.write(message);
     }
 

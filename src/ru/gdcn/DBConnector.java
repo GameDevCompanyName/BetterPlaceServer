@@ -11,23 +11,23 @@ public class DBConnector {
     private static String className;
     private static Connection connection;
 
-    public static void initDBConnector(){
+    public static void initDBConnector() {
         className = "DBConnector";
         connection = initConnection();
         checkIfTableExists();
     }
 
     //Уствновка соединения с БД
-    private static Connection initConnection(){
+    private static Connection initConnection() {
         Logger.log("Инициализация Connection.", className);
         String url = "jdbc:sqlite:BetterPlace.db";
         Connection connection = null;
 
-        try{
+        try {
             Logger.log("DriverManager...", className);
             connection = DriverManager.getConnection(url);
             Logger.log("DriverManager CONNECTED.", className);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Logger.logError("DriverManager NOT CONNECTED.", className);
             Logger.logError(e.toString(), className);
         }
@@ -47,27 +47,27 @@ public class DBConnector {
                 + " regdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP "
                 + ");";
 
-        try(Statement statement = connection.createStatement()){
+        try (Statement statement = connection.createStatement()) {
             Logger.log("Statement execute...", className);
             statement.execute(sql);
             Logger.log("Statement executed.", className);
             Logger.log("Таблица пользователей существует и работает.", className);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Logger.logError("Проблема доступа к таблице пользователей.", className);
             Logger.logError(e.toString(), className);
         }
     }
 
     //Проверка логина и пароля
-    public static boolean checkLoginAttempt(String login, String password){
+    public static boolean checkLoginAttempt(String login, String password) {
         Logger.log("Поверяю правильность пароля юзера: " + login, className);
         String sql = "SELECT login, password FROM Users WHERE login=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, login);
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 String dbPassword = rs.getString("password");
-                if (password.equals(dbPassword)){
+                if (password.equals(dbPassword)) {
                     Logger.log("Пароль правильный для юзера: " + login, className);
                     return true;
                 } else {
@@ -83,10 +83,10 @@ public class DBConnector {
     }
 
     //Добавление нового пользователя
-    public static void insertNewUser(String login, String password){
+    public static void insertNewUser(String login, String password) {
         String sql = "INSERT INTO Users (login, password, color) VALUES(?,?,?)";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             //TODO Сделать генератор HEX для цвета
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append('#');
@@ -96,35 +96,35 @@ public class DBConnector {
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, stringBuilder.toString());
             preparedStatement.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     //Проверка наличия юзера
-    public  static boolean searchForUser(String login){
+    public static boolean searchForUser(String login) {
         String sql = "SELECT * FROM Users WHERE login=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, login);
             ResultSet rs = pstmt.executeQuery();
-            if (!rs.isBeforeFirst()){
+            if (!rs.isBeforeFirst()) {
                 return false;
             } else {
                 return true;
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
     //Получить цвет пользователя
-    public static String getUserColor(String login){
+    public static String getUserColor(String login) {
         String sql = "SELECT color FROM Users WHERE login=?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, login);
             ResultSet rs = pstmt.executeQuery();
-            if (!rs.isBeforeFirst()){
+            if (!rs.isBeforeFirst()) {
                 return "false";
             }
             return rs.getString("color");

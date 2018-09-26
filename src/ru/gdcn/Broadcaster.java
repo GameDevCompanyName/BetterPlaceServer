@@ -12,7 +12,7 @@ public class Broadcaster {
     private static Map<Channel, User> loggedChannels = new HashMap<>();
     private static Map<User, Channel> loggedUsers = new HashMap<>();
 
-    public static boolean checkIfUserOnline(String login){
+    public static boolean checkIfUserOnline(String login) {
         boolean userOnline = false;
         User userToCheck = new User(login);
 
@@ -43,7 +43,7 @@ public class Broadcaster {
         return channelLogged;
     }
 
-    public static void messageRecieved(Channel userChannel, String message){
+    public static void messageRecieved(Channel userChannel, String message) {
         User sender = loggedChannels.get(userChannel);
         Logger.log("Отправляю всем пользователям сообщение пользователя.", className);
         sendAllMessage(ServerMessage.userMessage(
@@ -67,8 +67,8 @@ public class Broadcaster {
         ));
     }
 
-    private static void sendAllMessage(String JSONmessage){
-        for (User user:loggedChannels.values()){
+    private static void sendAllMessage(String JSONmessage) {
+        for (User user : loggedChannels.values()) {
             user.sendMessage(JSONmessage);
         }
     }

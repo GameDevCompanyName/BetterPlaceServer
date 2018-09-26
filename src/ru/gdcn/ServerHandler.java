@@ -16,13 +16,13 @@ public class ServerHandler extends SimpleChannelHandler {
         Logger.log("Получено сообщение: " + message, className);
 
         String[] parsedMessage = message.split("/d/");
-        for (String string: parsedMessage){
-            if (!string.equals(""));
-                ServerMessage.read(string, e.getChannel());
+        for (String string : parsedMessage) {
+            if (!string.equals("")) ;
+            ServerMessage.read(string, e.getChannel());
         }
     }
 
-    private String getStringFromBuffer(ChannelBuffer buffer){
+    private String getStringFromBuffer(ChannelBuffer buffer) {
         int bufSize = buffer.readableBytes();
         byte[] byteBuffer = new byte[bufSize];
         buffer.readBytes(byteBuffer);

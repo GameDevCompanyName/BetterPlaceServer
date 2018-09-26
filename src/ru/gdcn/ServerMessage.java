@@ -46,25 +46,25 @@ public class ServerMessage {
         }
     }
 
-    public static String loginSuccess(){
+    public static String loginSuccess() {
         JSONObject object = new JSONObject();
         object.put("type", "loginSuccess");
         return object.toJSONString();
     }
 
-    public static String loginWrongError(){
+    public static String loginWrongError() {
         JSONObject object = new JSONObject();
         object.put("type", "loginWrongError");
         return object.toJSONString();
     }
 
-    public static String loginAlreadyError(){
+    public static String loginAlreadyError() {
         JSONObject object = new JSONObject();
         object.put("type", "loginAlreadyError");
         return object.toJSONString();
     }
 
-    public static String userColor(String login, String color){
+    public static String userColor(String login, String color) {
         JSONObject object = new JSONObject();
         object.put("type", "userColor");
         object.put("login", login);
@@ -72,7 +72,7 @@ public class ServerMessage {
         return object.toJSONString();
     }
 
-    public static String userMessage(String login, String message, String color){
+    public static String userMessage(String login, String message, String color) {
         JSONObject object = new JSONObject();
         object.put("type", "userMessage");
         object.put("login", login);
@@ -81,14 +81,14 @@ public class ServerMessage {
         return object.toJSONString();
     }
 
-    public static String serverMessage(String message){
+    public static String serverMessage(String message) {
         JSONObject object = new JSONObject();
         object.put("type", "serverMessage");
         object.put("text", message);
         return object.toJSONString();
     }
 
-    public static String serverPong(){
+    public static String serverPong() {
         JSONObject object = new JSONObject();
         object.put("type", "pong");
         return object.toJSONString();

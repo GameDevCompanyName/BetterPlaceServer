@@ -12,8 +12,7 @@ import java.util.concurrent.Executors;
 import static ru.gdcn.Constants.PORT;
 
 
-
-public class Server{
+public class Server {
     private static String className = "ru.gdcn.Server";
 
     public static void main(String[] args) {
@@ -31,7 +30,7 @@ public class Server{
 
         Logger.log("Bootstrap...", className);
         ServerBootstrap bootstrap = new ServerBootstrap(factory);
-        bootstrap.setPipelineFactory(()-> Channels.pipeline(new ServerHandler()));
+        bootstrap.setPipelineFactory(() -> Channels.pipeline(new ServerHandler()));
         Logger.log("Bootstrap DONE", className);
 
         Logger.log("Binding Channel...", className);
