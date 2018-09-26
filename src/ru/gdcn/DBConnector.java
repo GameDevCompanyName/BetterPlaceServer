@@ -1,9 +1,7 @@
 package ru.gdcn;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Random;
 
 /*
 Класс для работы с БД
@@ -45,7 +43,7 @@ public class DBConnector {
                 + " id INTEGER PRIMARY KEY,\n"
                 + " login VARCHAR(20) NOT NULL UNIQUE,\n"
                 + " password VARCHAR(20) NOT NULL,\n"
-                + " color VARCHAR(6) NOT NULL,\n"
+                + " color VARCHAR(7) NOT NULL,\n"
                 + " regdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP "
                 + ");";
 
@@ -58,5 +56,81 @@ public class DBConnector {
             Logger.logError("Проблема доступа к таблице пользователей.", className);
             Logger.logError(e.toString(), className);
         }
+    }
+
+    //Проверка логина и пароля
+    public static boolean checkLoginAttempt(String login, String password){
+        Logger.log("Поверяю правильность пароля юзера: " + login, className);
+        String sql = "SELECT login, password FROM Users WHERE login=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                String dbPassword = rs.getString("password");
+                if (password.equals(dbPassword)){
+                    Logger.log("Пароль правильный для юзера: " + login, className);
+                    return true;
+                } else {
+                    Logger.log("Пароль неверный для юзера: " + login, className);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            Logger.logError("Что-то пошло не так при проверке пароля для юзера: " + login, className);
+            Logger.logError(e.toString(), className);
+        }
+        return false;
+    }
+
+    //Добавление нового пользователя
+    public static void insertNewUser(String login, String password){
+        String sql = "INSERT INTO Users (login, password, color) VALUES(?,?,?)";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            //TODO Сделать генератор HEX для цвета
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append('#');
+            stringBuilder.append(1 + (new Random().nextInt(999999)));
+
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, stringBuilder.toString());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    //Проверка наличия юзера
+    public  static boolean searchForUser(String login){
+        String sql = "SELECT * FROM Users WHERE login=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.isBeforeFirst()){
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //Получить цвет пользователя
+    public static String getUserColor(String login){
+        String sql = "SELECT color FROM Users WHERE login=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.isBeforeFirst()){
+                return "false";
+            }
+            return rs.getString("color");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "false";
     }
 }
