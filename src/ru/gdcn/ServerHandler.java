@@ -18,7 +18,7 @@ public class ServerHandler extends SimpleChannelHandler {
         String[] parsedMessage = message.split("/d/");
         for (String string: parsedMessage){
             if (!string.equals(""));
-                //TODO чтение сообщения
+                ServerMessage.read(string, e.getChannel());
         }
     }
 
@@ -33,7 +33,7 @@ public class ServerHandler extends SimpleChannelHandler {
     public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelClosed(ctx, e);
         Logger.log("Канал закрылся.", className);
-        //TODO обработать закрытие
+        ServerMethods.disconnectReceived(e.getChannel());
     }
 
     @Override
@@ -52,8 +52,7 @@ public class ServerHandler extends SimpleChannelHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         Logger.log("Cловил Exception.", className);
         e.getCause().printStackTrace();
-        //TODO соответственно отлючился/отключить и обработать закрытие, удаление
-
-        e.getChannel().close();
+        ServerMethods.disconnectReceived(e.getChannel());
+//        e.getChannel().close();
     }
 }

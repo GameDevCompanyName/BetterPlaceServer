@@ -27,15 +27,18 @@ public class ServerMessage {
                 break;
             case "message":
                 Logger.log("Получил обычное сообщение.", className);
-                //TODO обработать сообщение
+                ServerMethods.messageReceived(
+                        userChannel,
+                        incomingMessage.get("text").toString()
+                );
                 break;
             case "disconnect":
                 Logger.log("Получил сообщение об отключении.", className);
-                //TODO обработать сообщение
+                ServerMethods.disconnectReceived(userChannel);
                 break;
             case "ping":
                 Logger.log("Получил пинг-запрос.", className);
-                //TODO обработать сообщение
+                ServerMethods.pingReceived(userChannel);
                 break;
             default:
                 Logger.logError("Неизвестный тип сообщения: " + type, className);
@@ -43,7 +46,6 @@ public class ServerMessage {
         }
     }
 
-    //TODO методы упаковки сообщений
     public static String loginSuccess(){
         JSONObject object = new JSONObject();
         object.put("type", "loginSuccess");
@@ -83,6 +85,12 @@ public class ServerMessage {
         JSONObject object = new JSONObject();
         object.put("type", "serverMessage");
         object.put("text", message);
+        return object.toJSONString();
+    }
+
+    public static String serverPong(){
+        JSONObject object = new JSONObject();
+        object.put("type", "pong");
         return object.toJSONString();
     }
 }

@@ -58,23 +58,26 @@ public class ServerMethods {
     }
 
     public static void messageReceived(Channel userChannel, String text) {
-
         Logger.log("Проверяю залогинен ли канал, пытающийся отправить сообщение.", className);
-
         boolean userIsLogged = Broadcaster.checkIfChannelLogged(userChannel);
-
         if (userIsLogged){
             Logger.log("Канал залогинен, передаю сообщение в Broadcaster.", className);
             Broadcaster.messageRecieved(userChannel, text);
         } else {
             Logger.log("Канал НЕ залогинен и не может отправлять сообщения.", className);
         }
-
     }
 
     public static void pingReceived(Channel userChannel) {
         Logger.log("Пришёл запрос пинга.", className);
         sendPongAnswer(userChannel);
+    }
+
+    public static void disconnectReceived(Channel userChannel) {
+        Logger.log("Канал отключается.", className);
+        Broadcaster.userDisconnected(userChannel);
+        userChannel.close();
+        Logger.log("Сообщение об отключении обработано.", className);
     }
 
     private static void sendUserAlreadyOnlineMessage(Channel userChannel) {
