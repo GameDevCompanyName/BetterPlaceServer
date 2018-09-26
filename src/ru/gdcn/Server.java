@@ -19,7 +19,7 @@ public class Server{
     public static void main(String[] args) {
         Logger.log("Сервер запускается", className);
         Logger.log("Инициализация DBConnector...", className);
-//        DBConnector.initDBConnector();
+        DBConnector.initDBConnector();
         Logger.log("DBConnector DONE", className);
 
         Logger.log("ChannelFactory...", className);
