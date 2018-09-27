@@ -52,7 +52,7 @@ public class ServerHandler extends SimpleChannelHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         Logger.log("Cловил Exception.", className);
         e.getCause().printStackTrace();
-        ServerMethods.disconnectReceived(e.getChannel());
-//        e.getChannel().close();
+//        ServerMethods.disconnectReceived(e.getChannel());
+        e.getChannel().close();
     }
 }

@@ -90,7 +90,12 @@ public class DBConnector {
             //TODO Сделать генератор HEX для цвета
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append('#');
-            stringBuilder.append(1 + (new Random().nextInt(999999)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
+            stringBuilder.append(1 + (new Random().nextInt(9)));
 
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);

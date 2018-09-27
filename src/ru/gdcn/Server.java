@@ -36,5 +36,7 @@ public class Server {
         Logger.log("Binding Channel...", className);
         Channel channel = bootstrap.bind(new InetSocketAddress(PORT));
         Logger.log("Binding Channel DONE", className);
+
+        
     }
 }
