@@ -34,6 +34,11 @@ public class Commands {
                             userChannel,
                             ServerMessage.serverMessage(user.getLogin() + "\n"));
                     break;
+            case "info":
+                ServerMethods.sendMessageUser(
+                        userChannel,
+                        ServerMessage.serverMessage("Довчтупные команды:\n/server clients\n/server info")
+                );
             default:
                 ServerMethods.sendMessageUser(
                         userChannel,
