@@ -1,7 +1,10 @@
-package ru.gdcn;
+package ru.gdcn.server;
 
 import org.jboss.netty.channel.Channel;
+import ru.gdcn.server.utilities.Logger;
+import ru.gdcn.server.utilities.TextFormer;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +31,8 @@ public class Broadcaster {
         Logger.log("Добавляю нового пользователя в список залогиненых: " + newUser.getLogin(), className);
         loggedChannels.put(userChannel, newUser);
         loggedUsers.put(newUser, userChannel);
-        sendAllMessage(ServerMessage.serverMessage(
+
+        sendMessageAll(ServerMessage.serverMessage(
                 TextFormer.userConnected(newUser.getLogin())
         ));
     }
@@ -43,12 +47,12 @@ public class Broadcaster {
         return channelLogged;
     }
 
-    public static void messageRecieved(Channel userChannel, String message) {
+    public static void messageBroadcast(Channel userChannel, String text) {
         User sender = loggedChannels.get(userChannel);
         Logger.log("Отправляю всем пользователям сообщение пользователя.", className);
-        sendAllMessage(ServerMessage.userMessage(
+        sendMessageAll(ServerMessage.userMessage(
                 sender.getLogin(),
-                message,
+                text,
                 sender.getColor()
         ));
     }
@@ -62,14 +66,22 @@ public class Broadcaster {
         Logger.log("Удаляю пользователя из списка залогиненых: " + userToDelete.getLogin(), className);
         loggedChannels.remove(userChannel);
         loggedUsers.remove(userToDelete);
-        sendAllMessage(ServerMessage.serverMessage(
+        sendMessageAll(ServerMessage.serverMessage(
                 TextFormer.userDisconnected(userToDelete.getLogin())
         ));
     }
 
-    private static void sendAllMessage(String JSONmessage) {
+    public static void serverMessageBroadcast(String text){
+        sendMessageAll(ServerMessage.serverMessage(text));
+    }
+
+    public static Collection<User> getUsers(){
+        return loggedChannels.values();
+    }
+
+    private static void sendMessageAll(String JSONMessage) {
         for (User user : loggedChannels.values()) {
-            user.sendMessage(JSONmessage);
+            user.sendMessage(JSONMessage);
         }
     }
 }

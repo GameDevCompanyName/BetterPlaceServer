@@ -1,4 +1,4 @@
-package ru.gdcn;
+package ru.gdcn.server;
 
 /*
 Класс для упаковки и распаковки сообщений.
@@ -7,6 +7,7 @@ package ru.gdcn;
 import org.jboss.netty.channel.Channel;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import ru.gdcn.server.utilities.Logger;
 
 public class ServerMessage {
 
@@ -39,6 +40,13 @@ public class ServerMessage {
             case "ping":
                 Logger.log("Получил пинг-запрос.", className);
                 ServerMethods.pingReceived(userChannel);
+                break;
+            case "command":
+                Logger.log("Получил команду от пользователя: " + message, className);
+                ServerMethods.commandReceived(
+                        userChannel,
+                        incomingMessage.get("text").toString()
+                );
                 break;
             default:
                 Logger.logError("Неизвестный тип сообщения: " + type, className);
@@ -81,10 +89,10 @@ public class ServerMessage {
         return object.toJSONString();
     }
 
-    public static String serverMessage(String message) {
+    public static String serverMessage(String text) {
         JSONObject object = new JSONObject();
         object.put("type", "serverMessage");
-        object.put("text", message);
+        object.put("text", text);
         return object.toJSONString();
     }
 

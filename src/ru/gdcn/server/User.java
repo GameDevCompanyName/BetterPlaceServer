@@ -1,6 +1,7 @@
-package ru.gdcn;
+package ru.gdcn.server;
 
 import org.jboss.netty.channel.Channel;
+import ru.gdcn.server.utilities.Logger;
 
 public class User {
 

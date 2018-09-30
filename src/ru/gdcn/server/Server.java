@@ -1,19 +1,21 @@
-package ru.gdcn;
+package ru.gdcn.server;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import ru.gdcn.server.commands.CommandLine;
+import ru.gdcn.server.utilities.Logger;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import static ru.gdcn.Constants.PORT;
+import static ru.gdcn.server.Constants.PORT;
 
 
 public class Server {
-    private static String className = "ru.gdcn.Server";
+    private static String className = "ru.gdcn.server.Server";
 
     public static void main(String[] args) {
         Logger.log("Сервер запускается", className);
@@ -37,6 +39,6 @@ public class Server {
         Channel channel = bootstrap.bind(new InetSocketAddress(PORT));
         Logger.log("Binding Channel DONE", className);
 
-        
+        new CommandLine().run();
     }
 }

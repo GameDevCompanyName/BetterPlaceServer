@@ -1,4 +1,6 @@
-package ru.gdcn;
+package ru.gdcn.server;
+
+import ru.gdcn.server.utilities.Logger;
 
 import java.sql.*;
 import java.util.Random;

@@ -1,8 +1,9 @@
-package ru.gdcn;
+package ru.gdcn.server;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
+import ru.gdcn.server.utilities.Logger;
 
 import java.nio.charset.StandardCharsets;
 

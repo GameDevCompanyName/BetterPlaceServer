@@ -1,4 +1,4 @@
-package ru.gdcn;
+package ru.gdcn.server.utilities;
 
 public class TextFormer {
     public static String userConnected(String login) {
