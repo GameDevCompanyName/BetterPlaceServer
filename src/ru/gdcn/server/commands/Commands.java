@@ -39,6 +39,7 @@ public class Commands {
                         userChannel,
                         ServerMessage.serverMessage("Доcтупные команды:\n/server clients\n/server info")
                 );
+                break;
             default:
                 ServerMethods.sendMessageUser(
                         userChannel,
