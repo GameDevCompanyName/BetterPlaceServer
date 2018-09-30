@@ -37,7 +37,7 @@ public class Commands {
             case "info":
                 ServerMethods.sendMessageUser(
                         userChannel,
-                        ServerMessage.serverMessage("Довчтупные команды:\n/server clients\n/server info")
+                        ServerMessage.serverMessage("Доcтупные команды:\n/server clients\n/server info")
                 );
             default:
                 ServerMethods.sendMessageUser(
