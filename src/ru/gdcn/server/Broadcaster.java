@@ -50,7 +50,7 @@ public class Broadcaster {
     public static void messageBroadcast(Channel userChannel, String text) {
         User sender = loggedChannels.get(userChannel);
         Logger.log("Отправляю всем пользователям сообщение пользователя.", className);
-        sendMessageAll(ServerMessage.userMessage(
+        sendMessageAll(sender, ServerMessage.userMessage(
                 sender.getLogin(),
                 text,
                 sender.getColor()
@@ -81,6 +81,14 @@ public class Broadcaster {
 
     private static void sendMessageAll(String JSONMessage) {
         for (User user : loggedChannels.values()) {
+            user.sendMessage(JSONMessage);
+        }
+    }
+
+    private static void sendMessageAll(User sender, String JSONMessage){
+        for (User user : loggedChannels.values()) {
+            if (user.getLogin().equals(sender.getLogin()))
+                continue;
             user.sendMessage(JSONMessage);
         }
     }
