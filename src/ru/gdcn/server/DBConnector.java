@@ -10,11 +10,10 @@ import java.util.Random;
  */
 public class DBConnector {
 
-    private static String className;
+    private static String className = "DBConnector";
     private static Connection connection;
 
     public static void initDBConnector() {
-        className = "DBConnector";
         connection = initConnection();
         checkIfTableExists();
     }
@@ -46,7 +45,6 @@ public class DBConnector {
                 + " login VARCHAR(20) NOT NULL UNIQUE,\n"
                 + " password VARCHAR(20) NOT NULL,\n"
                 + " color VARCHAR(7) NOT NULL,\n"
-                + " regdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP "
                 + ");";
 
         try (Statement statement = connection.createStatement()) {
@@ -89,7 +87,6 @@ public class DBConnector {
         String sql = "INSERT INTO Users (login, password, color) VALUES(?,?,?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            //TODO Сделать генератор HEX для цвета
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append('#');
             stringBuilder.append(1 + (new Random().nextInt(9)));

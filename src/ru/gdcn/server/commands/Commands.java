@@ -27,6 +27,11 @@ public class Commands {
     }
 
     public static void executeUserCommand(Channel userChannel, String[] commands) {
+         if (commands.length == 1)
+             ServerMethods.sendMessageUser(
+                     userChannel,
+                     ServerMessage.serverMessage("Нет такой команды.")
+             );
         switch (commands[1]) {
             case "clients":
                 for (User user : Broadcaster.getUsers())
@@ -37,7 +42,9 @@ public class Commands {
             case "info":
                 ServerMethods.sendMessageUser(
                         userChannel,
-                        ServerMessage.serverMessage("Доcтупные команды:\n/server clients\n/server info")
+                        ServerMessage.serverMessage("Доcтупные команды:\n" +
+                                "/server clients\n" +
+                                "/server info")
                 );
                 break;
             default:
