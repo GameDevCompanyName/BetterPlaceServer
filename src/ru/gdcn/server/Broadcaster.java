@@ -75,6 +75,12 @@ public class Broadcaster {
         sendMessageAll(ServerMessage.serverMessage(text));
     }
 
+    public static void userKicked(String login) {
+        User kickUser = new User(login);
+        Channel userChannel = loggedUsers.get(kickUser);
+        ServerMethods.disconnectReceived(userChannel);
+    }
+
     public static Collection<User> getUsers(){
         return loggedChannels.values();
     }

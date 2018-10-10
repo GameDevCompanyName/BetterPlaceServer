@@ -71,20 +71,19 @@ public class ServerMethods {
         Logger.log("Сообщение об отключении обработано.", className);
     }
 
-    public static void commandReceived(Channel userChannel, String text){
+    public static void commandReceived(Channel userChannel, String text) {
         Logger.log("Проверяю залогинен ли канал, пытающийся выполнить команду.", className);
         boolean userIsLogged = Broadcaster.checkIfChannelLogged(userChannel);
         if (userIsLogged) {
             Logger.log("Канал залогинен, передаю команду в Commands.", className);
             Pattern pattern = Pattern.compile("^/[a-zA-Z0-9\\s]+$");
             Matcher m = pattern.matcher(text);
-            if(m.matches()) {
+            if (m.matches()) {
                 Logger.log("Команда корректна.", className);
                 text = text.substring(1);
                 String[] commands = text.split(" ");
                 Commands.executeUserCommand(userChannel, commands);
-            }
-            else {
+            } else {
                 Logger.log("Команда некорректна.", className);
                 sendMessageUser(userChannel, ServerMessage.serverMessage("Некорретная команда."));
             }
@@ -93,7 +92,27 @@ public class ServerMethods {
         }
     }
 
-    public static void sendServerMessageAll(String text){
+    public static void echoReceived(Channel userChannel, String[] commands) {
+        Logger.log("Отправляю эхо-запрос.", className);
+        if (commands.length >= 3) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 2; i < commands.length - 1; i++)
+                stringBuilder.append(commands[i]).append(" ");
+            stringBuilder.append(commands[commands.length-1]);
+            ServerMethods.sendMessageUser(userChannel,
+                    ServerMessage.serverMessage(stringBuilder.toString()));
+        } else {
+            ServerMethods.sendMessageUser(userChannel,
+                    ServerMessage.serverMessage("Hello, World!"));
+        }
+    }
+
+    public static void kickUser(String login) {
+        Broadcaster.userKicked(login);
+        sendServerMessageAll(login + " был исключен.");
+    }
+
+    public static void sendServerMessageAll(String text) {
         Logger.log("Отправляю сервеное сообщение.", className);
         Broadcaster.serverMessageBroadcast(text);
     }
