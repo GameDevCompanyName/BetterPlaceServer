@@ -48,13 +48,13 @@ public class Commands {
             case "echo":
                 ServerMethods.echoReceived(userChannel, commands);
                 break;
-            case "info":
+            case "help":
                 ServerMethods.sendMessageUser(
                         userChannel,
                         ServerMessage.serverMessage("Доcтупные команды:\n" +
                                 "/server clients\n" +
                                 "/server echo <your text>\n" +
-                                "/server info")
+                                "/server help")
                 );
                 break;
             default:
